@@ -1,0 +1,53 @@
+name: Release
+
+on:
+    push:
+        tags:
+            - "v*"
+
+jobs:
+    release:
+        name: Build & Release AirClient
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Set up JDK 8
+              uses: actions/setup-java@v4
+              with:
+                  distribution: temurin
+                  java-version: 8
+                  cache: gradle
+
+            - name: Grant execute permission for gradlew
+              run: chmod +x gradlew
+
+            - name: Build with Gradle
+              run: ./gradlew build --no-daemon --stacktrace
+
+            - name: Get tag version
+              id: tag
+              run: echo "version=${GITHUB_REF#refs/tags/v}" >> "$GITHUB_OUTPUT"
+
+            - name: Create GitHub Release
+              uses: softprops/action-gh-release@v2
+              with:
+                  name: AirClient ${{ steps.tag.outputs.version }}
+                  body: |
+                      ## AirClient v${{ steps.tag.outputs.version }}
+
+                      自动构建版本，适用于 Minecraft 1.8.9 + Forge。
+
+                      ### 构建信息
+                      - 提交: ${{ github.sha }}
+                      - 构建时间: ${{ github.event.repository.updated_at }}
+                  files: build/libs/*.jar
+                  draft: false
+                  prerelease: false
+                  generate_release_notes: true
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
