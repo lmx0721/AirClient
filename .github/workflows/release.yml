@@ -36,7 +36,7 @@ jobs:
         id: prerelease
         run: |
           TAG="${{ github.ref_name }}"
-          if echo "$TAG" | grep -qiE 'alpha|beta|rc|pre|dev'; then
+          if echo "$TAG" | grep -qiE '^b[0-9]|alpha|beta|rc|pre|dev'; then
             echo "prerelease=true" >> $GITHUB_OUTPUT
             echo "Tag '$TAG' is a prerelease"
           else
