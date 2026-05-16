@@ -31,12 +31,19 @@ jobs:
 
             - name: Get tag version
               id: tag
-              run: echo "version=${GITHUB_REF#refs/tags/v}" >> "$GITHUB_OUTPUT"
+              run: |
+                  VERSION="${GITHUB_REF#refs/tags/v}"
+                  echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+                  if echo "${VERSION}" | grep -qiE 'alpha|beta|rc|pre'; then
+                    echo "prerelease=true" >> "$GITHUB_OUTPUT"
+                  else
+                    echo "prerelease=false" >> "$GITHUB_OUTPUT"
+                  fi
 
             - name: Create GitHub Release
               uses: softprops/action-gh-release@v2
               with:
-                  name: AirClient ${{ steps.tag.outputs.version }}
+                  name: AirClient v${{ steps.tag.outputs.version }}
                   body: |
                       ## AirClient v${{ steps.tag.outputs.version }}
 
@@ -47,7 +54,7 @@ jobs:
                       - 构建时间: ${{ github.event.repository.updated_at }}
                   files: build/libs/*.jar
                   draft: false
-                  prerelease: false
+                  prerelease: ${{ steps.tag.outputs.prerelease }}
                   generate_release_notes: true
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
