@@ -1,6 +1,7 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven { url = "https://jitpack.io/" }
         maven { url = "https://maven.aliyun.com/nexus/content/groups/public/" }
         maven { url = "https://mirrors.cloud.tencent.com/nexus/repository/maven-public/" }
     }
