@@ -4,12 +4,14 @@ on:
     push:
         tags:
             - "v*"
-            - "b*"
+            - "b[0-9]*"
 
 jobs:
     release:
         name: Create Release
         runs-on: ubuntu-latest
+        permissions:
+            contents: write
 
         steps:
             - name: Checkout
