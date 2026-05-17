@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static net.ccbluex.liquidbounce.utils.client.MinecraftInstance.mc;
+import static op.air.airclient.utils.client.MinecraftInstance.mc;
 import static op.air.airclient.utils.vitox.particle.util.RenderUtils.drawCircle;
 
 /**

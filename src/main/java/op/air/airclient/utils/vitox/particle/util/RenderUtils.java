@@ -6,7 +6,7 @@
 
 package op.air.airclient.utils.vitox.particle.util;
 
-import net.ccbluex.liquidbounce.utils.extensions.MathExtensionsKt;
+import op.air.airclient.utils.extensions.MathExtensionsKt;
 
 import static org.lwjgl.opengl.GL11.*;
 
