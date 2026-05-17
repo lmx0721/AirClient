@@ -1,7 +1,7 @@
 /*
- * LiquidBounce Hacked Client
- * A free open source mixin-based injection hacked client for Minecraft using Minecraft Forge.
- * https://github.com/CCBlueX/LiquidBounce/
+ * AirClient Hacked Client
+ * A free open source mixin-based injection hacked client built on Liquidbounce legacy codebase.
+ * https://github.com/lmx0721/AirClient
  */
 package net.ccbluex.liquidbounce.features.special
 

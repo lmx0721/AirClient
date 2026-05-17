@@ -28,9 +28,9 @@ If parts of the codebase that are currently still written in Java can be ported 
 To document the ownership of a file, we include the following text in all code files *(.kt and .java)* at the beginning of the file:
 ```kotlin
 /*
- * LiquidBounce Hacked Client
- * A free open source mixin-based injection hacked client for Minecraft using Minecraft Forge.
- * https://github.com/CCBlueX/LiquidBounce/
+ * AirClient Hacked Client
+ * A free open source mixin-based injection hacked client built on Liquidbounce legacy codebase.
+ * https://github.com/lmx0721/AirClient
  */
 ```
  
