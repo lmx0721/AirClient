@@ -39,29 +39,3 @@ jobs:
         with:
           name: AirClient
           path: build/libs/*.jar
-
-      - name: Publish nightly build
-        if: github.event_name == 'push' && github.ref == 'refs/heads/legacy'
-        run: |
-          cd build/libs
-          export JAR=$(find . -name "*.jar" -not -name "*-sources.jar" -not -name "*-dev.jar" | head -1)
-          export LB_VERSION=$(grep '^mod_version' ../../gradle.properties | cut -d'=' -f2)
-          export MINECRAFT_VERSION='1.8.9'
-          echo "JAR: $JAR, Version: $LB_VERSION, Minecraft: $MINECRAFT_VERSION"
-          mkdir -p zip
-          cp $JAR zip/liquidbounce.jar
-          cd zip
-          zip -r liquidbounce.zip *
-          md5sum liquidbounce.zip
-          curl --connect-timeout 30 -m 300 -X POST \
-            -F "artifact=@liquidbounce.zip" \
-            -H "Authorization: ${{ secrets.NIGHTLY_PASS }}" \
-            -F "gh_id=${{ github.event.head_commit.id }}" \
-            -F "gh_ref=${{ github.ref }}" \
-            -F "gh_message=${{ github.event.head_commit.message }}" \
-            -F "gh_timestamp=${{ github.event.head_commit.timestamp }}" \
-            -F "lb_version=$LB_VERSION" \
-            -F "mc_version=$MINECRAFT_VERSION" \
-            -F "jre_version=8" \
-            -F "subsystem=forge" \
-            https://api.liquidbounce.net/api/v1/version/new
