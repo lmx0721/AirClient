@@ -66,7 +66,6 @@ configurations {
 }
 
 dependencies {
-    implementation fileTree(dir: 'airclient_l1b', include: ['*.jar'])
     implementation("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
         transitive = false
         exclude module: "guava"
