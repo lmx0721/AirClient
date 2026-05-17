@@ -4,7 +4,9 @@ build/
 .kotlin/
 
 # IDE
-.idea/
+.idea/*
+!.idea/copyright/
+!.idea/codeInsightSettings.xml
 *.iml
 *.ipr
 *.iws
