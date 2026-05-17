@@ -1,0 +1,65 @@
+/*
+ * AirClient Hacked Client
+ *  A free open source mixin-based injection hacked client built on Liquidbounce legacy codebase.
+ * https://github.com/lmx0721/AirClient
+ */
+
+/*
+ * Air Client
+ * A free open source mixin-based injection hacked client for Minecraft using Minecraft Forge.
+ */
+package op.air.airclient.features.command
+
+import op.air.airclient.AirClient.commandManager
+import op.air.airclient.utils.client.MinecraftInstance
+import op.air.airclient.utils.client.asResourceLocation
+import op.air.airclient.utils.client.playSound
+
+abstract class Command(val command: String, vararg val alias: String) : MinecraftInstance {
+    /**
+     * Execute commands with provided [args]
+     */
+    abstract fun execute(args: Array<String>)
+
+    /**
+     * Returns a list of command completions based on the provided [args].
+     * If a command does not implement [tabComplete] an [EmptyList] is returned by default.
+     *
+     * @param args an array of command arguments that the player has passed to the command so far
+     * @return a list of matching completions for the command the player is trying to autocomplete
+     * @author NurMarvin
+     */
+    open fun tabComplete(args: Array<String>) = emptyList<String>()
+
+    /**
+     * Print [msg] to chat
+     */
+    protected fun chat(msg: String) = op.air.airclient.utils.client.chat("§3$msg")
+
+    /**
+     * Print [syntax] of command to chat
+     */
+    protected fun chatSyntax(syntax: String) = chat("§3Syntax: §7${commandManager.prefix}$syntax")
+
+    /**
+     * Print [syntaxes] of command to chat
+     */
+    protected fun chatSyntax(syntaxes: Array<String>) {
+        chat("§3Syntax:")
+
+        for (syntax in syntaxes)
+            chat("§8> §7${commandManager.prefix}$command ${syntax.lowercase()}")
+    }
+
+    /**
+     * Print a syntax error to chat
+     */
+    protected fun chatSyntaxError() = chat("§3Syntax error")
+
+    /**
+     * Play edit sound
+     */
+    protected fun playEdit() {
+        mc.playSound("random.anvil_use".asResourceLocation())
+    }
+}

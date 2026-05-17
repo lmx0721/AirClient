@@ -45,9 +45,9 @@ Our naming of packages follows the following format:
 * `country.company-name.product-name`
 
 *Example:* 
-* `net.ccbluex.liquidbounce`
+* `op.air.airclient`
 
-If your code is self-contained and not designed exclusively for LiquidBounce, we may allow you to include it in a separate package outside `net.ccbluex.liquidbounce`. Please note that we have to decide on a case by case basis.
+If your code is self-contained and not designed exclusively for LiquidBounce, we may allow you to include it in a separate package outside `op.air.airclient`. Please note that we have to decide on a case by case basis.
   
 *Example:*
 `net.vitox` instead of `net.ccbluex`

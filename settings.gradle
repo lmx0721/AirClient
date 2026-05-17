@@ -25,4 +25,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'LiquidBounce'
+rootProject.name = 'AirClient'
