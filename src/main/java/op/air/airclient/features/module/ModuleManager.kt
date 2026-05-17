@@ -159,7 +159,6 @@ object ModuleManager : Listenable, Collection<Module> by MODULE_REGISTRY {
             KillAura,
             RageBot,
             LagRange,
-            LiquidChat,
             LiquidWalk,
             Liquids,
             LongJump,

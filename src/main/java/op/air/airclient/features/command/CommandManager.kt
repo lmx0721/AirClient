@@ -60,10 +60,6 @@ object CommandManager {
         registerCommand(PrefixCommand)
         registerCommand(ShortcutCommand)
         registerCommand(XrayCommand)
-        registerCommand(LiquidChatCommand)
-        registerCommand(PrivateChatCommand)
-        registerCommand(ChatTokenCommand)
-        registerCommand(ChatAdminCommand)
         registerCommand(TeleportCommand)
     }
 

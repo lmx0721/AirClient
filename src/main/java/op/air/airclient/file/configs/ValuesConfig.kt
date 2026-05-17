@@ -9,7 +9,6 @@ import op.air.airclient.AirClient
 import op.air.airclient.AirClient.commandManager
 import op.air.airclient.AirClient.moduleManager
 import op.air.airclient.cape.CapeService
-import op.air.airclient.features.module.modules.misc.LiquidChat.jwtToken
 import op.air.airclient.features.special.ClientFixes
 import op.air.airclient.features.special.ClientRichPresence
 import op.air.airclient.file.FileConfig
@@ -63,10 +62,6 @@ class ValuesConfig(file: File) : FileConfig(file) {
                     if (jsonValue.has("API-Key")) apiKey = jsonValue["API-Key"].asString
                 }
 
-                key.equals("liquidchat", true) -> {
-                    val jsonValue = value as JsonObject
-                    if (jsonValue.has("token")) jwtToken = jsonValue["token"].asString
-                }
 
                 key.equals("DonatorCape", true) -> {
                     val jsonValue = value as JsonObject
@@ -128,9 +123,6 @@ class ValuesConfig(file: File) : FileConfig(file) {
         theAlteningObject.addProperty("API-Key", apiKey)
         jsonObject.add("thealtening", theAlteningObject)
 
-        val liquidChatObject = JsonObject()
-        liquidChatObject.addProperty("token", jwtToken)
-        jsonObject.add("liquidchat", liquidChatObject)
 
         val capeObject = JsonObject()
         capeObject.addProperty("TransferCode", CapeService.knownToken)
