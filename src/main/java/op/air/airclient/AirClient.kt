@@ -72,8 +72,7 @@ object AirClient {
     const val CLIENT_NAME = "AirClient"
     const val CLIENT_AUTHOR = "CCBlueX,LMX"
     const val CLIENT_CLOUD = "https://cloud.liquidbounce.net/LiquidBounce"
-    const val CLIENT_WEBSITE = "liquidbounce.net"
-    const val CLIENT_GITHUB = "https://github.com/the-OmegaLabs/GoldBounce"
+    const val CLIENT_GITHUB = "https://github.com/lmx0721/AirClient"
 
     const val MINECRAFT_VERSION = "1.8.9"
     
