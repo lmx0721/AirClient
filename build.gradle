@@ -115,7 +115,6 @@ dependencies {
 
 shadowJar {
     archiveClassifier.set("")
-    archiveFileName.set("Air Client-b1.0.jar")
     destinationDirectory.set(file("build/libs"))
     duplicatesStrategy DuplicatesStrategy.EXCLUDE
 
