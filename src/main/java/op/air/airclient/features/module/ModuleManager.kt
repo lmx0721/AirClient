@@ -279,6 +279,7 @@ object ModuleManager : Listenable, Collection<Module> by MODULE_REGISTRY {
             BlockBreakFX,
             BlockPlaceFX,
             FireballTrajectory,
+            AntiKnockBack
         )
 
         registerModules(modules = modules)
