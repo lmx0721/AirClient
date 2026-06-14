@@ -1320,7 +1320,7 @@ object Island : Module("Island", Category.RENDER) {
             val currentLyric = MusicPlayer.currentLyricDisplay
             val currentMusicName = MusicPlayer.currentMusicName
             val displayText = if (lyricShowMusicName && currentMusicName != "None") {
-                "�?$currentMusicName"
+                currentMusicName
             } else if (currentLyric.isNotEmpty()) {
                 currentLyric.take(15)
             } else {
@@ -1464,7 +1464,7 @@ object Island : Module("Island", Category.RENDER) {
             val currentLyric = MusicPlayer.currentLyricDisplay
             val currentMusicName = MusicPlayer.currentMusicName
             val displayText = if (lyricShowMusicName && currentMusicName != "None") {
-                "�?$currentMusicName"
+                currentMusicName
             } else if (currentLyric.isNotEmpty()) {
                 currentLyric.take(15)
             } else {
@@ -1728,7 +1728,7 @@ object Island : Module("Island", Category.RENDER) {
         
         val displayLines = mutableListOf<Pair<String, Boolean>>()
         if (lyricShowMusicName && currentMusicName != "None") {
-            displayLines.add("�?$currentMusicName" to true)
+            displayLines.add(currentMusicName to true)
         }
         if (lyricShowPrevious && previousLyric.isNotEmpty()) {
             displayLines.add(previousLyric to false)
@@ -1887,7 +1887,7 @@ object Island : Module("Island", Category.RENDER) {
         
         val displayLines = mutableListOf<Pair<String, Boolean>>()
         if (lyricShowMusicName && currentMusicName != "None") {
-            displayLines.add("�?$currentMusicName" to true)
+            displayLines.add(currentMusicName to true)
         }
         if (lyricShowPrevious && previousLyric.isNotEmpty()) {
             displayLines.add(previousLyric to false)
@@ -2157,7 +2157,7 @@ object Island : Module("Island", Category.RENDER) {
         
         val displayLines = mutableListOf<Pair<String, Boolean>>()
         if (lyricShowMusicName && currentMusicName != "None") {
-            displayLines.add("♪$currentMusicName" to true)
+            displayLines.add(currentMusicName to true)
         }
         if (lyricShowPrevious && previousLyric.isNotEmpty()) {
             displayLines.add(previousLyric to false)

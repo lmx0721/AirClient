@@ -35,6 +35,7 @@ object MusicCommand : Command("music", "mu") {
             "stop" -> { MusicPlayer.stopMusic(); chat("§a已停止播放") }
             "local" -> handleLocal(args)
             "volume", "vol" -> handleVolume(args)
+            "gui" -> MusicPlayer.openGui()
             else -> printUsage()
         }
     }
@@ -205,14 +206,15 @@ object MusicCommand : Command("music", "mu") {
                 "prev",
                 "stop",
                 "local [序号]",
-                "volume <0-100>"
+                "volume <0-100>",
+                "gui"
             )
         )
     }
 
     override fun tabComplete(args: Array<String>): List<String> {
         if (args.size == 1) {
-            val subCommands = listOf("search", "play", "add", "queue", "next", "prev", "stop", "local", "volume")
+            val subCommands = listOf("search", "play", "add", "queue", "next", "prev", "stop", "local", "volume", "gui")
             return subCommands.filter { it.startsWith(args[0], true) }
         }
         return emptyList()

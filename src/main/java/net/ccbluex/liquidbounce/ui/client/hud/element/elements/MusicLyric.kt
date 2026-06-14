@@ -134,7 +134,7 @@ class MusicLyric(x: Double = 10.0, y: Double = 100.0, scale: Float = 1F, side: S
         val displayLines = mutableListOf<String>()
         
         if (showMusicName && currentMusicName != "None") {
-            displayLines.add("♪ $currentMusicName")
+            displayLines.add(currentMusicName)
         }
         
         if (showLyric && currentLyric.isNotEmpty()) {

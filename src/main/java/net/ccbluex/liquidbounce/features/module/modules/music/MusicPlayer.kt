@@ -16,6 +16,7 @@ import net.ccbluex.liquidbounce.features.module.modules.music.core.ParsedLyrics
 import net.ccbluex.liquidbounce.features.module.modules.music.core.PlaybackEngine
 import net.ccbluex.liquidbounce.features.module.modules.music.core.Track
 import net.ccbluex.liquidbounce.features.module.modules.music.core.TrackSource
+import net.ccbluex.liquidbounce.ui.client.music.GuiMusicPlayer
 import net.ccbluex.liquidbounce.utils.client.chat
 import net.ccbluex.liquidbounce.utils.kotlin.SharedScopes
 import kotlinx.coroutines.launch
@@ -37,6 +38,10 @@ object MusicPlayer : Module("MusicPlayer", Category.CLIENT) {
     val musicPlatform by choices("音乐平台", arrayOf("本地", "网易云"), "本地")
     val searchLimit by int("搜索数量", 10, 1..30)
     private val neteaseDomain by text("网易云域名", "music.163.com")
+    private val openGuiOnEnable by boolean("打开界面", true)
+
+    /** Prevents openGui ↔ onEnable recursion when enabling the module to show the GUI. */
+    private var suppressOpenGuiOnEnable = false
 
     private var selectedMusicName = "无"
 
@@ -74,6 +79,12 @@ object MusicPlayer : Module("MusicPlayer", Category.CLIENT) {
 
     val musicListNames: List<String>
         get() = localTracks.map { it.displayName }
+
+    val localTrackList: List<Track>
+        get() = localTracks
+
+    val playingTrack: Track?
+        get() = currentTrack
 
     private lateinit var musicChoicesValue: ListValue
 
@@ -149,6 +160,10 @@ object MusicPlayer : Module("MusicPlayer", Category.CLIENT) {
 
         if (autoPlay && localTracks.isNotEmpty()) {
             playLocalIndex(0)
+        }
+
+        if (openGuiOnEnable && !suppressOpenGuiOnEnable) {
+            mc.displayGuiScreen(GuiMusicPlayer(mc.currentScreen))
         }
     }
 
@@ -372,4 +387,16 @@ object MusicPlayer : Module("MusicPlayer", Category.CLIENT) {
     }
 
     fun getVolume(): Int = volumeValue
+
+    fun openGui(prev: net.minecraft.client.gui.GuiScreen? = mc.currentScreen) {
+        if (!state) {
+            suppressOpenGuiOnEnable = true
+            try {
+                state = true
+            } finally {
+                suppressOpenGuiOnEnable = false
+            }
+        }
+        mc.displayGuiScreen(GuiMusicPlayer(prev))
+    }
 }
