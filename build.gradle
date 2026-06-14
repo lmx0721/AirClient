@@ -78,7 +78,6 @@ dependencies {
 
     annotationProcessor("org.spongepowered:mixin:0.7.11-SNAPSHOT")
 
-    implementation "com.jagrosh:DiscordIPC:0.4"
 
     implementation("com.github.CCBlueX:Elixir:1.2.6") {
         exclude module: "kotlin-stdlib"
@@ -184,7 +183,7 @@ jar {
             "FMLCorePlugin": "net.ccbluex.liquidbounce.injection.forge.MixinLoader",
             "FMLCorePluginContainsFMLMod": true,
             "ForceLoadAsMod": true,
-            "MixinConfigs": "liquidbounce.forge.mixins.json",
+            "MixinConfigs": "liquidbounce.forge.mixins.json,mixins.phosphor.json",
             "ModSide": "CLIENT",
             "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
             "TweakOrder": "0",
@@ -211,3 +210,45 @@ reobfJar.enabled = false
 shadowJar.finalizedBy(reobfShadowJar)
 
 build.dependsOn(reobfShadowJar)
+
+// ForgeGradle 2.x puts the packaged mod jar on runClient's classpath. This
+// project's normal build jar is reobfuscated for Minecraft launchers, so it
+// cannot be used in ForgeGradle's deobfuscated dev runtime. runClient still
+// needs a jar very early, though, because FML loads command-line coremods
+// before the normal source-set classpath is usable. Build a small, non-reobf
+// development jar for that launch path and replace the production jar with it.
+task runClientDevJar(type: Jar) {
+    dependsOn classes
+
+    archiveBaseName.set(project.archives_base_name)
+    archiveClassifier.set("dev")
+    destinationDirectory.set(file("${buildDir}/devRun"))
+
+    from sourceSets.main.output
+
+    manifest.attributes(
+            "FMLCorePlugin": "net.ccbluex.liquidbounce.injection.forge.MixinLoader",
+            "FMLCorePluginContainsFMLMod": true,
+            "ForceLoadAsMod": true,
+            "MixinConfigs": "liquidbounce.forge.mixins.json,mixins.phosphor.json",
+            "ModSide": "CLIENT",
+            "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+            "TweakOrder": "0",
+            "FMLAT": "liquidbounce_at.cfg"
+    )
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaExec).matching { it.name == "runClient" }.all {
+        dependsOn runClientDevJar
+
+        doFirst {
+            def packagedJarDir = file("${buildDir}/libs").canonicalFile
+            def devJar = runClientDevJar.archiveFile.get().asFile.canonicalFile
+            classpath = files(devJar) + sourceSets.main.runtimeClasspath + files(classpath.files.findAll { candidate ->
+                def canonicalCandidate = candidate.canonicalFile
+                canonicalCandidate != devJar && !canonicalCandidate.path.startsWith(packagedJarDir.path)
+            })
+        }
+    }
+}

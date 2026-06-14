@@ -40,7 +40,7 @@ open class Module(
 
     // Adds spaces between lowercase and uppercase letters (KillAura -> Kill Aura)
     val spacedName: String = name.splitToSequence(SPLIT_REGEX).joinToString(separator = " "),
-    subjective: Boolean = category == Category.RENDER || category == Category.MUSIC || category == Category.CLIENT,
+    subjective: Boolean = category == Category.RENDER || category == Category.CLIENT,
     val gameDetecting: Boolean = canBeEnabled,
     defaultState: Boolean = false,
     defaultHidden: Boolean = false,

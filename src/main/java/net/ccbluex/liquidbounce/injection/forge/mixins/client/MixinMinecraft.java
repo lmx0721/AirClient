@@ -111,6 +111,10 @@ public abstract class MixinMinecraft {
 
     @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;checkGLError(Ljava/lang/String;)V", ordinal = 2, shift = At.Shift.AFTER))
     private void startGame(CallbackInfo callbackInfo) throws ExecutionException, InterruptedException {
+        if (liquidBounce$preloadFuture == null) {
+            liquidBounce$preloadFuture = LiquidBounce.INSTANCE.preload();
+        }
+
         liquidBounce$preloadFuture.get();
 
         LiquidBounce.INSTANCE.startClient();
@@ -310,4 +314,6 @@ public abstract class MixinMinecraft {
     public int getLimitFramerate(int constant) {
         return 60;
     }
+
+
 }

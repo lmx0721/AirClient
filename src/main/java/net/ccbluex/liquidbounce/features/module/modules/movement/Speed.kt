@@ -11,9 +11,12 @@ import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.aac.
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.aac.AACHop350
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.aac.AACHop4
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.aac.AACHop5
+import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.aac.AACPortFDP
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.hypixel.HypixelHop
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.hypixel.HypixelLowHop
+import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.intave.IntaveHop
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.intave.IntaveHop14
+import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.intave.IntaveTimerHop
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.matrix.MatrixHop
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.matrix.MatrixSlowHop
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.matrix.OldMatrixHop
@@ -25,8 +28,10 @@ import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.spec
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.spectre.SpectreOnGround
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.verus.VerusFHop
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.verus.VerusHop
+import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.verus.LatestVerusHop
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.verus.VerusLowHop
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.verus.VerusLowHopNew
+import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.vulcan.VulcanFDP
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.vulcan.VulcanGround288
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.vulcan.VulcanHop
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.vulcan.VulcanLowHop
@@ -51,6 +56,7 @@ object Speed : Module("Speed", Category.MOVEMENT, Keyboard.KEY_X) {
         AACHop350,
         AACHop4,
         AACHop5,
+        AACPortFDP,
 
         // Spartan
         SpartanYPort,
@@ -65,11 +71,13 @@ object Speed : Module("Speed", Category.MOVEMENT, Keyboard.KEY_X) {
         VerusFHop,
         VerusLowHop,
         VerusLowHopNew,
+        LatestVerusHop,
 
         // Vulcan
         VulcanHop,
         VulcanLowHop,
         VulcanGround288,
+        VulcanFDP,
 
         // Matrix
         OldMatrixHop,
@@ -77,6 +85,8 @@ object Speed : Module("Speed", Category.MOVEMENT, Keyboard.KEY_X) {
         MatrixSlowHop,
 
         // Intave
+        IntaveHop,
+        IntaveTimerHop,
         IntaveHop14,
 
         // Server specific
@@ -84,12 +94,18 @@ object Speed : Module("Speed", Category.MOVEMENT, Keyboard.KEY_X) {
         HypixelHop,
         HypixelLowHop,
         BlocksMCHop,
+        MinemenHop,
 
         // Other
         Boost,
         Frame,
         MiJump,
         OnGround,
+        GroundPacket,
+        GroundStrafeHop,
+        StrafeHop,
+        VanillaHop,
+        MoraLowHop,
         SlowHop,
         Legit,
         CustomSpeed
@@ -199,7 +215,7 @@ object Speed : Module("Speed", Category.MOVEMENT, Keyboard.KEY_X) {
         if (thePlayer.isMoving && !sprintManually)
             thePlayer.isSprinting = true
 
-        modeModule.onMotion()
+        modeModule.onMotion(event)
     }
 
     val onMove = handler<MoveEvent> { event ->

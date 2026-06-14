@@ -10,8 +10,6 @@
         "menu.configuration": "Конфигурация",
         "menu.contributors": "Сътрудници",
 
-        "menu.discordRPC.typeBox": "UNTRANSLATED: Type Here..",
-
         "menu.altManager.typeCustomPrefix": "UNTRANSLATED: Type Custom Alt Prefix Here..",
 
         "notification.moduleEnabled": "%s се активира",

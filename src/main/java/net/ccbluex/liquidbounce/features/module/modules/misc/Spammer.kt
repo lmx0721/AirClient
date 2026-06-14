@@ -17,7 +17,7 @@ object Spammer : Module("Spammer", Category.MISC, subjective = true) {
 
     private val delay by intRange("Delay", 500..1000, 0..5000)
 
-    private val message by text("Message", "$CLIENT_NAME Client | liquidbounce(.net) | CCBlueX on yt")
+    private val message by text("Message", "$CLIENT_NAME Client | Sup3r Sk1dder Cl1ent | j01n at 722573066")
 
     private val custom by boolean("Custom", false)
 

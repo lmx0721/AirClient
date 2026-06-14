@@ -46,6 +46,7 @@ object RenderUtils : MinecraftInstance {
         glGenLists(1)
     }
     var deltaTime = 0
+    val yPosOffset: Float = 0f
 
     /**
      * Useful for clipping any top-layered rectangle that falls outside a bottom-layered rectangle.
@@ -1789,6 +1790,7 @@ object RenderUtils : MinecraftInstance {
         glPopAttrib()
     }
 
+    @JvmStatic
     fun originalRoundedRect(
         paramXStart: Float, paramYStart: Float, paramXEnd: Float, paramYEnd: Float, radius: Float, color: Int
     ) {

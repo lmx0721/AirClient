@@ -4,7 +4,6 @@
  */
 package net.ccbluex.liquidbounce.injection.forge.mixins.gui;
 
-import net.ccbluex.liquidbounce.features.module.modules.render.AntiBlind;
 import net.minecraft.client.gui.achievement.GuiAchievement;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,19 +15,16 @@ public class MixinGuiAchievement {
 
     @Inject(method = "displayAchievement", at = @At("HEAD"), cancellable = true)
     private void injectAchievements(CallbackInfo ci) {
+        ci.cancel();
+    }
 
-        if (AntiBlind.INSTANCE.handleEvents() && AntiBlind.INSTANCE.getAchievements()) {
-            // Cancel Achievement Display Packet
-            ci.cancel();
-        }
+    @Inject(method = "displayUnformattedAchievement", at = @At("HEAD"), cancellable = true)
+    private void injectUnformattedAchievements(CallbackInfo ci) {
+        ci.cancel();
     }
 
     @Inject(method = "updateAchievementWindow", at = @At("HEAD"), cancellable = true)
     private void injectAchievementWindows(CallbackInfo ci) {
-
-        if (AntiBlind.INSTANCE.handleEvents() && AntiBlind.INSTANCE.getAchievements()) {
-            // Cancel Achievement Window Packet
-            ci.cancel();
-        }
+        ci.cancel();
     }
 }

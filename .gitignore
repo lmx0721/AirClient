@@ -17,6 +17,7 @@ build/
 .settings/
 .classpath
 .project
+claude/
 
 # Minecraft run directory
 run/
@@ -58,3 +59,6 @@ Test.java
 # Build scripts
 build.bat
 build_with_output.bat
+
+bin/
+promo-video/

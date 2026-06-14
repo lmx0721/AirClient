@@ -14,8 +14,6 @@
         "menu.configuration": "配置",
         "menu.contributors": "贡献者",
 
-        "menu.discordRPC.typeBox": "在此处输入..",
-
         "button.back": "返回",
         "button.moveUp": "上移",
         "button.moveDown": "下移",

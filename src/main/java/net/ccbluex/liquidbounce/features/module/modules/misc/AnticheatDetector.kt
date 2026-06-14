@@ -17,6 +17,7 @@ import net.ccbluex.liquidbounce.utils.client.chat
 import net.minecraft.network.play.server.S01PacketJoinGame
 import net.minecraft.network.play.server.S32PacketConfirmTransaction
 import net.ccbluex.liquidbounce.utils.client.ServerUtils.remoteIp
+import kotlin.math.abs
 
 object AnticheatDetector : Module("AnticheatDetector", Category.MISC) {
     private val debug by boolean("Debug", true)
@@ -51,6 +52,11 @@ object AnticheatDetector : Module("AnticheatDetector", Category.MISC) {
         
         when {
             remoteIp.lowercase().equals("hypixel.net", true) -> notify("Watchdog")
+
+            actionNumbers.all { it < 0 } &&
+                diffs.distinct().size >= 3 &&
+                actionNumbers.any { it <= Short.MIN_VALUE + 32 || it < -20_000 } &&
+                diffs.any { abs(it) > 1000 } -> notify("FairFight")
             
             diffs.all { it == diffs.first() } -> when (diffs.first()) {
                 

@@ -91,6 +91,10 @@ object Fonts : MinecraftInstance {
     lateinit var fontSFApple35: GameFontRenderer
     lateinit var fontSFApple40: GameFontRenderer
     lateinit var fontSFApple50: GameFontRenderer
+    lateinit var fontRise35: GameFontRenderer
+    lateinit var fontRise40: GameFontRenderer
+    lateinit var fontRise50: GameFontRenderer
+    lateinit var fontRiseIcon35: GameFontRenderer
 
     @JvmStatic
     val font24: GameFontRenderer by lazy { fontRegular30 }
@@ -321,6 +325,26 @@ object Fonts : MinecraftInstance {
             fontSFApple50 = register(
                 FontInfo(name = "SF Apple", size = 50),
                 getFontOrDefault("SFApple.ttf", 50).asGameFontRenderer()
+            )
+
+            fontRise35 = register(
+                FontInfo(name = "Rise SF UI Pro", size = 35),
+                getFontOrDefault("SF-UI-Pro.ttf", 35).asGameFontRenderer()
+            )
+
+            fontRise40 = register(
+                FontInfo(name = "Rise SF UI Pro", size = 40),
+                getFontOrDefault("SF-UI-Pro.ttf", 40).asGameFontRenderer()
+            )
+
+            fontRise50 = register(
+                FontInfo(name = "Rise SF UI Pro", size = 50),
+                getFontOrDefault("SF-UI-Pro.ttf", 50).asGameFontRenderer()
+            )
+
+            fontRiseIcon35 = register(
+                FontInfo(name = "Rise Icons", size = 35),
+                getFontOrDefault("Icon-1.ttf", 35).asGameFontRenderer()
             )
 
             loadCustomFonts()

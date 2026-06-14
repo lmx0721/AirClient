@@ -20,11 +20,14 @@ import net.ccbluex.liquidbounce.utils.render.shader.shaders.RainbowShader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngame;
+import net.minecraft.client.gui.GuiPlayerTabOverlay;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -44,11 +47,15 @@ import static org.lwjgl.opengl.GL11.*;
 
 @Mixin(GuiIngame.class)
 @SideOnly(Side.CLIENT)
-public abstract class MixinGuiInGame extends Gui {
+public abstract class MixinGuiInGame extends MixinGui {
 
     @Shadow
     protected abstract void renderHotbarItem(int index, int xPos, int yPos, float partialTicks, EntityPlayer player);
 
+    @Shadow @Final
+    protected static ResourceLocation widgetsTexPath;
+
+    @Shadow public GuiPlayerTabOverlay overlayPlayerList;
     @Shadow
     @Final
     protected Minecraft mc;
@@ -69,121 +76,49 @@ public abstract class MixinGuiInGame extends Gui {
     }
 
     @Inject(method = "renderTooltip", at = @At("HEAD"), cancellable = true)
-    private void injectCustomHotbar(ScaledResolution resolution, float delta, CallbackInfo ci) {
+    private void injectCustomHotbar(ScaledResolution sr, float delta, CallbackInfo ci) {
         final HUD hud = HUD.INSTANCE;
         final RenderUtils render = RenderUtils.INSTANCE;
 
         if (mc.getRenderViewEntity() instanceof EntityPlayer) {
+            final Minecraft mc = Minecraft.getMinecraft();
             EntityPlayer entityPlayer = (EntityPlayer) mc.getRenderViewEntity();
-            float slot = entityPlayer.inventory.currentItem;
 
-            if (hud.handleEvents() && hud.getCustomHotbar()) {
-                if (hud.getSmoothHotbarSlot()) {
-                    slot = InventoryUtils.INSTANCE.getLerpedSlot();
-                }
+            boolean blackHB = hud.getState() && hud.getCustomHotbar();
+            int middleScreen = sr.getScaledWidth() / 2;
+            float posInv = hud.getAnimPos(entityPlayer.inventory.currentItem * 20F);
 
-                int middleScreen = resolution.getScaledWidth() / 2;
-                int height = resolution.getScaledHeight() - 1;
+            GlStateManager.resetColor();
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            mc.getTextureManager().bindTexture(widgetsTexPath);
 
-                float gradientOffset = (System.currentTimeMillis() % 10000) / 10000f;
+            float f = this.zLevel;
+            this.zLevel = -90.0F;
+            GlStateManager.resetColor();
 
-                float gradientX = (hud.getGradientX() == 0f) ? 0f : 1f / hud.getGradientX();
-                float gradientY = (hud.getGradientY() == 0f) ? 0f : 1f / hud.getGradientY();
+            RenderUtils.originalRoundedRect(middleScreen - 91, sr.getScaledHeight() - 2, middleScreen + 91, sr.getScaledHeight() - 22, 3F, Integer.MIN_VALUE);
+            RenderUtils.originalRoundedRect(middleScreen - 91 + posInv, sr.getScaledHeight() - 2, middleScreen - 91 + posInv + 22, sr.getScaledHeight() - 22, 3F, Integer.MAX_VALUE);
 
-                float rainbowOffset = (System.currentTimeMillis() % 10000) / 10000f;
-                float rainbowX = (hud.getRainbowX() == 0f) ? 0f : 1f / hud.getRainbowX();
-                float rainbowY = (hud.getRainbowY() == 0f) ? 0f : 1f / hud.getRainbowY();
+            this.zLevel = f;
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.enableRescaleNormal();
+            GlStateManager.enableBlend();
+            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+            RenderHelper.enableGUIStandardItemLighting();
 
-                List<float[]> gradientColors = ColorSettingsKt.toColorArray(hud.getBgGradColors(), hud.getMaxHotbarGradientColors());
-
-                GL11.glPushMatrix();
-                GL11.glDisable(GL11.GL_DEPTH_TEST);
-
-                boolean isGradient = hud.getHotbarMode().equals("Gradient");
-                boolean isRainbow = hud.getHotbarMode().equals("Rainbow");
-
-                AWTFontRenderer.Companion.setAssumeNonVolatile(true);
-
-                if (isGradient) {
-                    GradientShader.begin(
-                            true,
-                            gradientX,
-                            gradientY,
-                            gradientColors,
-                            hud.getGradientHotbarSpeed(),
-                            gradientOffset
-                    );
-                }
-
-                if (isRainbow) {
-                    RainbowShader.begin(true, rainbowX, rainbowY, rainbowOffset);
-                }
-
-                // Inner - Background
-                render.drawRoundedRectInt(
-                        middleScreen - 91, height - 22,
-                        middleScreen + 91, height,
-                        hud.getHbBackgroundColors().color().getRGB(),
-                        hud.getRoundedHotbarRadius(),
-                        RenderUtils.RoundedCorners.ALL
-                );
-
-                if (isRainbow) {
-                    RainbowShader.INSTANCE.stopShader();
-                }
-                if (isGradient) {
-                    GradientShader.INSTANCE.stopShader();
-                }
-
-                // Inner - Highlight
-                render.drawRoundedRect(
-                        middleScreen - 91 - 1 + slot * 20 + 1, height - 22,
-                        middleScreen - 91 - 1 + slot * 20 + 23, height - 23 - 1 + 24,
-                        hud.getHbHighlightColors().color().getRGB(),
-                        hud.getRoundedHotbarRadius(),
-                        RenderUtils.RoundedCorners.ALL
-                );
-
-                // Border - Background
-                render.drawRoundedBorder(
-                        middleScreen - 91, height - 21.55F,
-                        middleScreen + 91 + 0.1F, height - 0.5F,
-                        hud.getHbBackgroundBorder(),
-                        hud.getHbBackgroundBorderColors().color().getRGB(),
-                        hud.getRoundedHotbarRadius()
-                );
-
-                // Border - Highlight
-                render.drawRoundedBorder(
-                        middleScreen - 91 - 1 + slot * 20 + 1, height - 21.5F,
-                        middleScreen - 91 - 1 + slot * 20 + 23.15F, height - 23 - 1 + 23.5F,
-                        hud.getHbHighlightBorder(),
-                        hud.getHbHighlightBorderColors().color().getRGB(),
-                        hud.getRoundedHotbarRadius()
-                );
-
-                GL11.glEnable(GL11.GL_DEPTH_TEST);
-                GL11.glPopMatrix();
-
-                enableRescaleNormal();
-                glEnable(GL_BLEND);
-                tryBlendFuncSeparate(770, 771, 1, 0);
-                RenderHelper.enableGUIStandardItemLighting();
-
-                for (int j = 0; j < 9; ++j) {
-                    int l = height - 16 - 3;
-                    int k = middleScreen - 90 + j * 20 + 2;
-                    renderHotbarItem(j, k, l, delta, entityPlayer);
-                }
-
-                RenderHelper.disableStandardItemLighting();
-                disableRescaleNormal();
-                disableBlend();
-
-                AWTFontRenderer.Companion.setAssumeNonVolatile(false);
-
-                ci.cancel();
+            for (int j = 0; j < 9; ++j) {
+                int k = sr.getScaledWidth() / 2 - 90 + j * 20 + 2;
+                int l = sr.getScaledHeight() - 16 - (blackHB ? 4 : 3);
+                this.renderHotbarItem(j, k, l, delta, entityPlayer);
             }
+
+            RenderHelper.disableStandardItemLighting();
+            GlStateManager.disableRescaleNormal();
+            GlStateManager.disableBlend();
+            GlStateManager.translate(0F, RenderUtils.INSTANCE.getYPosOffset(), 0F);
+            liquidBounce$injectRender2DEvent(delta);
+            ci.cancel();
+            return;
         }
 
         liquidBounce$injectRender2DEvent(delta);

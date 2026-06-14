@@ -10,6 +10,13 @@ import net.ccbluex.liquidbounce.event.handler
 import net.ccbluex.liquidbounce.features.module.Category
 import net.ccbluex.liquidbounce.features.module.Module
 import net.ccbluex.liquidbounce.ui.client.clickgui.ClickGui
+import net.ccbluex.liquidbounce.ui.client.clickgui.astolfo.AstolfoClickGui
+import net.ccbluex.liquidbounce.ui.client.clickgui.augustus.AugustusClickGui
+import net.ccbluex.liquidbounce.ui.client.clickgui.moonlight.MoonLightClickGui
+import net.ccbluex.liquidbounce.ui.client.clickgui.neverlose.NeverloseScreen
+import net.ccbluex.liquidbounce.ui.client.clickgui.opai.OpaiScreen
+import net.ccbluex.liquidbounce.ui.client.clickgui.rise.RiseClickGui
+import net.ccbluex.liquidbounce.ui.client.clickgui.skeet.SkeetClickGui
 import net.ccbluex.liquidbounce.ui.client.clickgui.style.styles.BlackStyle
 import net.ccbluex.liquidbounce.ui.client.clickgui.style.styles.GlassStyle
 import net.ccbluex.liquidbounce.ui.client.clickgui.style.styles.LiquidBounceStyle
@@ -24,7 +31,7 @@ import java.awt.Color
 object ClickGUI : Module("ClickGUI", Category.CLIENT, Keyboard.KEY_RSHIFT, canBeEnabled = false) {
     private val style by choices(
         "Style",
-        arrayOf("LiquidBounce", "Null", "Slowly", "Black", "Neon", "Minimal", "Glass"),
+        arrayOf("LiquidBounce", "Null", "Slowly", "Black", "Neon", "Minimal", "Glass", "Neverlose", "Augustus", "Opai", "Skeet", "Astolfo", "MoonLight", "Rise"),
         "LiquidBounce"
     ).onChanged {
         updateStyle()
@@ -36,15 +43,30 @@ object ClickGUI : Module("ClickGUI", Category.CLIENT, Keyboard.KEY_RSHIFT, canBe
     val spacedModules by boolean("SpacedModules", false)
     val panelsForcedInBoundaries by boolean("PanelsForcedInBoundaries", false)
 
-    private val color by color("Color", Color(0, 160, 255)) { style !in arrayOf("Slowly", "Black") }
+    private val color by color("Color", Color(0, 160, 255)) { style !in arrayOf("Slowly", "Black", "Neverlose", "Augustus", "Opai", "Skeet", "Astolfo", "MoonLight", "Rise") }
 
     val guiColor
         get() = color.rgb
 
     override fun onEnable() {
-        updateStyle()
-        mc.displayGuiScreen(clickGui)
+        openSelectedStyle()
         Keyboard.enableRepeatEvents(true)
+    }
+
+    private fun openSelectedStyle() {
+        when (style) {
+            "Neverlose" -> mc.displayGuiScreen(NeverloseScreen())
+            "Augustus" -> mc.displayGuiScreen(AugustusClickGui())
+            "Opai" -> mc.displayGuiScreen(OpaiScreen.INSTANCE)
+            "Skeet" -> mc.displayGuiScreen(SkeetClickGui())
+            "Astolfo" -> mc.displayGuiScreen(AstolfoClickGui())
+            "MoonLight" -> mc.displayGuiScreen(MoonLightClickGui())
+            "Rise" -> mc.displayGuiScreen(RiseClickGui())
+            else -> {
+                updateStyle()
+                mc.displayGuiScreen(clickGui)
+            }
+        }
     }
 
     private fun updateStyle() {

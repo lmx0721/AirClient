@@ -10,7 +10,6 @@ import net.ccbluex.liquidbounce.LiquidBounce.commandManager
 import net.ccbluex.liquidbounce.LiquidBounce.moduleManager
 import net.ccbluex.liquidbounce.cape.CapeService
 import net.ccbluex.liquidbounce.features.special.ClientFixes
-import net.ccbluex.liquidbounce.features.special.ClientRichPresence
 import net.ccbluex.liquidbounce.file.FileConfig
 import net.ccbluex.liquidbounce.file.FileManager
 import net.ccbluex.liquidbounce.file.FileManager.PRETTY_GSON
@@ -43,10 +42,6 @@ class ValuesConfig(file: File) : FileConfig(file) {
             when {
                 key.equals("CommandPrefix", true) -> {
                     commandManager.prefix = value.asString
-                }
-
-                key.equals(ClientRichPresence.name, true) -> {
-                    ClientRichPresence.fromJson(value)
                 }
 
                 key.equals(Targets.name, true) -> {
@@ -111,8 +106,6 @@ class ValuesConfig(file: File) : FileConfig(file) {
             addProperty("CommandPrefix", commandManager.prefix)
             addProperty("ClientVersion", LiquidBounce.clientVersionText)
         }
-
-        jsonObject.add(ClientRichPresence.name, ClientRichPresence.toJson())
 
         jsonObject.add(Targets.name, Targets.toJson())
 

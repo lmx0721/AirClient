@@ -211,12 +211,10 @@ object ClientFixes : Module("ClientFixes", Category.CLIENT) {
             }
             is S14PacketEntity -> {
                 if(!entityPacket)return@handler
+                val entity = packet.getEntity(mc.theWorld) ?: return@handler
+                val box = entity.entityBoundingBox ?: return@handler
                 if (isNotValid(
-                        (packet.getEntity(mc.theWorld).entityBoundingBox.maxX - packet.getEntity(mc.theWorld).entityBoundingBox.minX) * (packet.getEntity(
-                            mc.theWorld
-                        ).entityBoundingBox.maxY - packet.getEntity(mc.theWorld).entityBoundingBox.minY) * (packet.getEntity(
-                            mc.theWorld
-                        ).entityBoundingBox.maxZ - packet.getEntity(mc.theWorld).entityBoundingBox.minZ), 1000
+                        (box.maxX - box.minX) * (box.maxY - box.minY) * (box.maxZ - box.minZ), 1000
                     )
                 ) {
                     event.cancelEvent()

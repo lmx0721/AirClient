@@ -46,8 +46,6 @@
         "text.Search": "§7Search",
         "text.Loggingintoaccount": "Logging into account...",
 
-        "menu.discordRPC.typeBox": "Type Here..",
-
         "menu.altManager.typeCustomPrefix": "Type Custom Alt Prefix Here..",
 
         "notification.moduleEnabled": "Enabled %s",

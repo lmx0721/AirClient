@@ -59,8 +59,8 @@
     "render.MixinModelBiped",
     "render.MixinRender",
     "render.MixinRenderEntityItem",
-    "render.MixinRenderItem",
     "render.MixinRendererLivingEntity",
+    "render.MixinRenderItem",
     "render.MixinRenderManager",
     "render.MixinRenderPlayer",
     "render.MixinTileEntityChestRenderer",
@@ -69,6 +69,8 @@
     "render.MixinTileEntityRendererDispatcher",
     "render.MixinVisGraph",
     "resources.MixinSkinManager",
+    "splash.MixinSplashProgress",
+    "splash.MixinSplashProgressRunnable",
     "tweaks.MixinAnvilChunkLoader",
     "tweaks.MixinMinecraftServer",
     "world.MixinChunk",
@@ -80,9 +82,9 @@
     "gui.MixinGuiAchievement",
     "gui.MixinGuiContainer",
     "gui.MixinGuiTextField",
+    "render.MixinEntityRendererWorldReplace",
     "render.MixinItemRenderer",
     "render.MixinRenderGlobal",
-    "render.MixinEntityRendererWorldReplace",
     "tweaks.MixinEntityFX"
   ]
 }

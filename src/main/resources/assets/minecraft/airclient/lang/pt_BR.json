@@ -10,8 +10,6 @@
         "menu.configuration": "Configuração",
         "menu.contributors": "Contribuidores",
 
-        "menu.discordRPC.typeBox": "UNTRANSLATED: Type Here..",
-
         "menu.altManager.typeCustomPrefix": "UNTRANSLATED: Type Custom Alt Prefix Here..",
 
         "notification.moduleEnabled": "Ativado %s",
