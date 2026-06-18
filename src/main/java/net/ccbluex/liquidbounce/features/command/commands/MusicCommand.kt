@@ -35,7 +35,10 @@ object MusicCommand : Command("music", "mu") {
             "stop" -> { MusicPlayer.stopMusic(); chat("§a已停止播放") }
             "local" -> handleLocal(args)
             "volume", "vol" -> handleVolume(args)
-            "gui" -> MusicPlayer.openGui()
+            "gui" -> {
+                MusicPlayer.openGui()
+                chat("§a正在打开音乐播放器...")
+            }
             else -> printUsage()
         }
     }

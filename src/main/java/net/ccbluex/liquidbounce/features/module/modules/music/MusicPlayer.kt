@@ -389,7 +389,7 @@ object MusicPlayer : Module("MusicPlayer", Category.CLIENT) {
 
     fun getVolume(): Int = volumeValue
 
-    fun openGui(prev: GuiScreen? = mc.currentScreen) {
+    fun openGui(prev: GuiScreen? = null) {
         if (!state) {
             suppressOpenGuiOnEnable = true
             try {
@@ -401,10 +401,7 @@ object MusicPlayer : Module("MusicPlayer", Category.CLIENT) {
         displayMusicGui(prev)
     }
 
-    /** Deferred to the next tick so chat closing after send does not dismiss the GUI. */
     private fun displayMusicGui(prev: GuiScreen?) {
-        mc.addScheduledTask {
-            mc.displayGuiScreen(GuiMusicPlayer(prev))
-        }
+        mc.displayGuiScreen(GuiMusicPlayer(prev))
     }
 }
