@@ -6,6 +6,7 @@
   "minVersion": "0.7",
   "mixins": [
     "block.MixinBlock",
+    "block.MixinVec3i",
     "block.MixinBlockAnvil",
     "block.MixinBlockLadder",
     "block.MixinBlockLiquid",
