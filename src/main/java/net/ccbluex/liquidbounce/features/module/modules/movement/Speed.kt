@@ -31,7 +31,6 @@ import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.veru
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.verus.LatestVerusHop
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.verus.VerusLowHop
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.verus.VerusLowHopNew
-import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.vulcan.VulcanFDP
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.vulcan.VulcanGround288
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.vulcan.VulcanHop
 import net.ccbluex.liquidbounce.features.module.modules.movement.speedmodes.vulcan.VulcanLowHop
@@ -77,7 +76,6 @@ object Speed : Module("Speed", Category.MOVEMENT, Keyboard.KEY_X) {
         VulcanHop,
         VulcanLowHop,
         VulcanGround288,
-        VulcanFDP,
 
         // Matrix
         OldMatrixHop,

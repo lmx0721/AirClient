@@ -18,6 +18,7 @@ import net.ccbluex.liquidbounce.features.module.modules.music.core.Track
 import net.ccbluex.liquidbounce.features.module.modules.music.core.TrackSource
 import net.ccbluex.liquidbounce.ui.client.music.GuiMusicPlayer
 import net.ccbluex.liquidbounce.utils.client.chat
+import net.minecraft.client.gui.GuiScreen
 import net.ccbluex.liquidbounce.utils.kotlin.SharedScopes
 import kotlinx.coroutines.launch
 
@@ -163,7 +164,7 @@ object MusicPlayer : Module("MusicPlayer", Category.CLIENT) {
         }
 
         if (openGuiOnEnable && !suppressOpenGuiOnEnable) {
-            mc.displayGuiScreen(GuiMusicPlayer(mc.currentScreen))
+            displayMusicGui(mc.currentScreen)
         }
     }
 
@@ -388,7 +389,7 @@ object MusicPlayer : Module("MusicPlayer", Category.CLIENT) {
 
     fun getVolume(): Int = volumeValue
 
-    fun openGui(prev: net.minecraft.client.gui.GuiScreen? = mc.currentScreen) {
+    fun openGui(prev: GuiScreen? = null) {
         if (!state) {
             suppressOpenGuiOnEnable = true
             try {
@@ -397,6 +398,10 @@ object MusicPlayer : Module("MusicPlayer", Category.CLIENT) {
                 suppressOpenGuiOnEnable = false
             }
         }
+        displayMusicGui(prev)
+    }
+
+    private fun displayMusicGui(prev: GuiScreen?) {
         mc.displayGuiScreen(GuiMusicPlayer(prev))
     }
 }

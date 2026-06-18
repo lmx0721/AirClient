@@ -94,7 +94,7 @@ object LiquidBounce {
             LOGGER.warn("Failed to load version properties: ${e.message}")
         }
         
-        clientVersionText = props.getProperty("version", "b1.2")
+        clientVersionText = props.getProperty("version", "b1.3")
         clientVersionNumber = 100
         clientCommit = props.getProperty("commit", "unknown")
         clientBranch = props.getProperty("branch", "unknown")

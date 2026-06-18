@@ -167,10 +167,20 @@ mcversion=${project.minecraft.version}
 }
 
 task moveResources {
+    dependsOn compileJava
+
     doLast {
         copy {
             from "${buildDir}/resources/main"
             into "${buildDir}/classes/java"
+        }
+
+        def refmap = file("${buildDir}/tmp/compileJava/liquidbounce.mixins.refmap.json")
+        if (refmap.exists()) {
+            copy {
+                from refmap
+                into "${buildDir}/classes/java"
+            }
         }
     }
 }
@@ -183,7 +193,7 @@ jar {
             "FMLCorePlugin": "net.ccbluex.liquidbounce.injection.forge.MixinLoader",
             "FMLCorePluginContainsFMLMod": true,
             "ForceLoadAsMod": true,
-            "MixinConfigs": "liquidbounce.forge.mixins.json,mixins.phosphor.json",
+            "MixinConfigs": "liquidbounce.forge.mixins.json",
             "ModSide": "CLIENT",
             "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
             "TweakOrder": "0",
@@ -209,7 +219,32 @@ reobfJar.enabled = false
 
 shadowJar.finalizedBy(reobfShadowJar)
 
-build.dependsOn(reobfShadowJar)
+task packageReleaseZip(type: Zip) {
+    group = "build"
+    description = "Packages zip_include files and the built mod jar into a release zip."
+
+    dependsOn reobfShadowJar
+
+    archiveBaseName.set("${project.archives_base_name}")
+    archiveExtension.set("zip")
+    destinationDirectory.set(file("${buildDir}/libs"))
+
+    doFirst {
+        file("${buildDir}/libs").listFiles()?.each { candidate ->
+            if (candidate.isFile() && candidate.name.endsWith(".zip")) {
+                candidate.delete()
+            }
+        }
+    }
+
+    from("zip_include")
+
+    from(shadowJar.archiveFile) {
+        rename { "airclient.jar" }
+    }
+}
+
+build.dependsOn packageReleaseZip
 
 // ForgeGradle 2.x puts the packaged mod jar on runClient's classpath. This
 // project's normal build jar is reobfuscated for Minecraft launchers, so it
@@ -230,7 +265,7 @@ task runClientDevJar(type: Jar) {
             "FMLCorePlugin": "net.ccbluex.liquidbounce.injection.forge.MixinLoader",
             "FMLCorePluginContainsFMLMod": true,
             "ForceLoadAsMod": true,
-            "MixinConfigs": "liquidbounce.forge.mixins.json,mixins.phosphor.json",
+            "MixinConfigs": "liquidbounce.forge.mixins.json",
             "ModSide": "CLIENT",
             "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
             "TweakOrder": "0",

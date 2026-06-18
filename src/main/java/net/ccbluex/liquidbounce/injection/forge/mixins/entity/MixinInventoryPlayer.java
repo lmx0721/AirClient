@@ -21,6 +21,6 @@ public class MixinInventoryPlayer {
         if (instance == null || instance.player == null || mc.thePlayer == null)
             return instance != null ? instance.currentItem : 0;
 
-        return instance.player.getGameProfile().equals(mc.thePlayer.getGameProfile()) ? SilentHotbar.INSTANCE.getCurrentSlot() : instance.currentItem;
+        return instance.player.getUniqueID().equals(mc.thePlayer.getUniqueID()) ? SilentHotbar.INSTANCE.getCurrentSlot() : instance.currentItem;
     }
 }

@@ -59,6 +59,34 @@ public abstract class MixinGuiChat extends MixinGuiScreen {
             inputField.setMaxStringLength(100);
     }
 
+    /**
+     * Client commands are handled in {@link MixinGuiScreen#messageSend} and cancel
+     * {@code sendChatMessage}, but vanilla {@code GuiChat.keyTyped} still closes the
+     * chat afterwards. Skip that close so command-triggered screens (e.g. MusicPlayer)
+     * are not immediately dismissed.
+     */
+    @Inject(
+            method = "keyTyped",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/Minecraft;displayGuiScreen(Lnet/minecraft/client/gui/GuiScreen;)V",
+                    ordinal = 1
+            ),
+            cancellable = true
+    )
+    private void preventCloseOnClientCommand(char typedChar, int keyCode, CallbackInfo callbackInfo) {
+        if (keyCode != 28) {
+            return;
+        }
+
+        final String text = inputField.getText().trim();
+        if (text.isEmpty() || !text.startsWith(String.valueOf(CommandManager.INSTANCE.getPrefix()))) {
+            return;
+        }
+
+        callbackInfo.cancel();
+    }
+
     @Inject(method = "updateScreen", at = @At("HEAD"))
     private void updateScreen(CallbackInfo callbackInfo) {
         final int delta = RenderUtils.INSTANCE.getDeltaTime();

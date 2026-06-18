@@ -25,6 +25,7 @@ import net.ccbluex.liquidbounce.utils.rotation.RotationSettings;
 import net.ccbluex.liquidbounce.utils.rotation.RotationUtils;
 import net.ccbluex.liquidbounce.utils.extensions.MathExtensionsKt;
 import net.ccbluex.liquidbounce.utils.extensions.PlayerExtensionKt;
+import com.mojang.authlib.GameProfile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
@@ -50,6 +51,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -100,6 +102,16 @@ public abstract class MixinEntityPlayerSP extends MixinAbstractClientPlayer {
     private float lastReportedYaw;
     @Shadow
     private float lastReportedPitch;
+
+    /**
+     * Kotlin 2 compiles {@code thePlayer.gameProfile} to {@code getGameProfile()} on this class, but
+     * MC 1.8.9 only declares the accessor on {@link net.minecraft.entity.player.EntityPlayer}.
+     * {@code gameProfile} is shadowed on {@link MixinEntityPlayer} where the field is declared.
+     */
+    @Unique
+    public GameProfile getGameProfile() {
+        return gameProfile;
+    }
 
     @Shadow
     public abstract void playSound(String name, float volume, float pitch);

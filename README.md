@@ -4,7 +4,7 @@
 
 A free open-source mixin-based injection hacked client for Minecraft using Minecraft Forge.
 
-**Version:** b1.2 | **Minecraft:** 1.8.9
+**Version:** b1.3 | **Minecraft:** 1.8.9
 
 [GitHub](https://github.com/lmx0721/AirClient) | [Bilibili](https://space.bilibili.com/3706927473232492) | QQ Group: 722573066
 

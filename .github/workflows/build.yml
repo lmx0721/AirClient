@@ -34,8 +34,14 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build --no-daemon
 
+      - name: Prepare release files
+        run: |
+          mkdir -p release
+          cp build/libs/AirClient-*.jar release/airclient.jar
+          cp -r zip_include/. release/
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: AirClient
-          path: build/libs/*.jar
+          path: release/
