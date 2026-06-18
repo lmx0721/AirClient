@@ -37,6 +37,9 @@ public abstract class MixinEntityPlayer extends MixinEntityLivingBase {
     public abstract GameProfile getGameProfile();
 
     @Shadow
+    protected GameProfile gameProfile;
+
+    @Shadow
     protected abstract boolean canTriggerWalking();
 
     @Shadow
