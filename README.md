@@ -2,6 +2,7 @@
 
 # AirClient
 
+注意:此项目已经停止维护,请使用新客户端AirPlus![Github](https://github.com/lmx0721/AirPlus)
 A free open-source mixin-based injection hacked client for Minecraft using Minecraft Forge.
 
 **Version:** 2.0 | **Minecraft:** 1.8.9
